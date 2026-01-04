@@ -3,6 +3,9 @@ with import <nixpkgs> {};
 writeShellScriptBin "rebuild" ''
 LOG_FILE="/tmp/nixos-switch.log"
 
+#Pre-Warm 
+rm -f /tmp/nixos-switch.log
+
 # Function to display a loading bar
 show_progress() {
     local progress=$1
@@ -10,8 +13,8 @@ show_progress() {
     local filled=$(( progress * width / 100 ))
     local empty=$(( width - filled ))
     printf "\r[" >/dev/tty
-    printf "%i''${filled}s" "" | tr ' ' '#' >/dev/tty
-    printf "%''${empty}s" "" | tr ' ' '-' >/dev/tty
+    printf "%''${filled}s" "" | tr ' ' '#' >/dev/tty
+    printf "%''${empty}s" "" | tr ' ' '-' >/dev/tty 
     printf "] %d%%" "$progress" >/dev/tty
 }
 
