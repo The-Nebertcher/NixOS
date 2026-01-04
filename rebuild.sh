@@ -1,22 +1,73 @@
 #!/run/current-system/sw/bin/zsh
 
-LOG_FILE="nixos-switch.log"
+LOG_FILE="/tmp/nixos-switch.log"
+
+# Function to display a loading bar
+show_progress() {
+    local progress=$1
+    local width=40
+    local filled=$(( progress * width / 100 ))
+    local empty=$(( width - filled ))
+    printf "\r[" >/dev/tty
+    printf "%${filled}s" "" | tr ' ' '#' >/dev/tty
+    printf "%${empty}s" "" | tr ' ' '-' >/dev/tty
+    printf "] %d%%" "$progress" >/dev/tty
+}
 
 # Run nixos-rebuild and handle error detection
+echo "Starting NixOS rebuild..."
 sudo nixos-rebuild switch &>"$LOG_FILE"
 if [ $? -eq 0 ]; then
-    # Put commands to run on success here
-    mkdir -p /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S) &>/dev/null
-    cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S)/ &>/dev/null
-    cd /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S)/ &>/dev/null
-    git add * &>/dev/null
-    git commit -m "New Rebuild pushed on $(date +%y%m%d_%H%M%S)"
-    git push origin main &>/dev/null
+  rm -f $LOG_FILE
+  echo "Rebuild successful. Starting backup and git push..."
+  show_progress 0
+  mkdir -p /mnt/backup/git_repos/nixos/$(date +%Y%m%d) &>/dev/null
+  show_progress 20
+
+  cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/$(date +%Y%m%d)/ &>/dev/null
+  show_progress 40
+
+  cd /mnt/backup/git_repos/nixos/$(date +%Y%m%d)/ &>/dev/null
+  show_progress 60
+
+  git add * &>/dev/null
+  show_progress 70
+
+  git commit -m "New Rebuild pushed on $(date +%Y%m%d)" &>/dev/null
+  show_progress 90
+
+  git push origin main &>/dev/null
+  show_progress 100
+  echo -e "\nDone!"
 else
-  echo "Rebuild failed..."
+
+  cat << "EOF"
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⢤⡰⢆⠦⡤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⣀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠶⣙⡎⢶⡙⣮⢓⡳⡜⢮⡹⢖⡢⠀⢀⡠⣔⢮⡙⢧⠳⣍⠾⣩⢗⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠶⣩⢞⡱⢞⣣⡝⠦⠻⠴⠫⠷⠙⢮⣝⣃⢩⠳⡜⢶⣙⢮⣓⢮⡓⢧⢞⡹⣆⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡞⡹⢆⣏⠞⢉⣠⠴⣚⢧⣋⠗⣎⡳⢦⡌⣁⢈⣋⣉⡥⢬⠥⡭⢬⠭⡭⢬⠥⣉⣂⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⢗⡺⣍⠯⡤⢼⡩⢖⣫⠵⣪⢼⡹⠲⠙⣒⡙⡚⣂⠐⠧⢞⡭⢞⡱⡏⠞⢱⢋⡚⣑⢊⡓⠢⠄⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⡝⢮⡱⢎⣳⡙⢶⣩⠳⣎⠳⡉⠄⣂⣉⣍⡱⣭⠳⣍⡻⣜⢂⠘⠧⠒⢒⣉⣩⠬⡥⢭⡩⢬⣉⠚⠢⠄⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡔⢰⡹⣜⢣⡝⣭⠲⣭⠳⠎⠥⠔⣨⢔⣫⢖⡳⣬⠳⠣⠛⠼⣱⡋⠾⠡⢰⣋⠯⠖⠣⣛⡉⠃⠋⠓⢉⣛⣙⠖⢦⡀
+⠀⠀⠀⠀⠀⡰⣏⠂⢧⢳⢭⣚⡜⢦⡛⡄⠒⠲⠎⠽⠚⠞⣂⣋⠁⢀⡀⠀⠈⠙⢿⣿⣿⡿⢠⣴⣶⣿⣿⠟⠁⡄⠀⣀⠀⠘⣿⣿⣷⡄
+⠀⠀⠀⠀⣜⡱⣭⢲⣋⢞⢦⠳⣜⡣⣝⢺⡙⡇⠎⣙⡻⢿⣿⠋⠀⢈⠁⢾⣷⠀⠈⣿⠟⠁⠻⣿⣿⣿⣿⠀⠀⠄⠘⠛⠁⠀⠸⠛⠋⠀
+⠀⠀⠀⢰⢎⡵⢎⡳⢬⣋⢮⢳⡌⢷⡘⢧⡹⣱⠳⣌⣉⠓⠢⠤⠄⠌⠀⠤⠄⠤⠐⠀⣡⠞⣝⣖⡲⢴⡤⢦⠤⡴⢤⣒⢦⠻⠉⠀⠀⠀
+⠀⠀⢠⢏⡞⣜⡣⢏⡳⢬⢣⣓⠞⣥⢛⠦⣝⢲⡹⡜⡬⢏⣳⢣⣛⢎⡟⢮⠝⢊⢥⠺⣥⢛⠶⣨⢙⠒⣊⢃⣛⡘⣃⠉⠀⠀⠀⠀⠀⠀
+⠀⢀⡏⡾⡸⢶⣉⢷⠹⡎⢷⣈⠿⣰⢏⡹⣈⢇⢷⡉⢷⣉⠶⣇⠾⠎⣉⡰⣎⠹⣎⡹⣆⠏⣷⢇⡏⣶⢸⡉⣶⢹⡸⣆⠀⠀⠀⠀⠀⠀
+⢠⠞⣼⢱⣙⠮⡜⣎⡳⢭⡓⣎⡳⡱⢎⡵⣩⠞⣦⢹⡲⣍⠞⣬⢏⡝⢦⢳⡜⡹⢆⠷⣸⡙⢦⢫⡜⢦⡳⣙⢦⢣⠗⣎⢶⡀⠀⠀⠀⠀
+⢨⣛⢴⢫⣜⢣⣝⢲⣙⢦⡝⢦⢳⡙⣎⠶⣣⢻⠴⣣⠷⡼⣹⢆⡟⡼⣩⠶⣹⣙⢮⠳⣥⢛⣬⠳⣜⢣⡳⣍⢎⢧⣛⡜⣎⠷⡀⠀⠀⠀
+⠸⡜⣎⢳⢬⠳⣬⢓⢮⢲⡙⣎⠧⣝⡜⡣⠋⡁⠤⣀⠆⡰⠠⢄⠨⡁⠓⠫⠵⠺⣼⣙⢦⣛⢦⣛⣬⣓⡳⣜⢮⢳⡜⠮⠵⠋⣁⠀⠀⠀
+⠈⢳⣜⢣⢞⡹⢆⡏⣎⢧⡹⢬⢳⠞⡜⠁⡰⢡⠃⢄⠡⣁⠉⠤⣁⠑⠉⠦⡐⢢⠄⣄⠢⠄⠤⡀⢄⡠⠄⣄⠢⢄⡐⢢⠰⠁⠆⠀⠀⠀
+⠀⠘⣬⡓⣎⡳⣍⠞⡜⢦⢫⣝⡈⢯⡱⣆⣀⣁⢊⣀⣃⣀⡙⠒⠠⠍⡜⡐⠰⢠⠄⡄⡉⢌⡁⢌⠠⣀⢉⠠⡁⢌⠠⢆⠂⠀⠀⠀⠀⠀
+⠀⠀⠀⠻⣔⢫⡜⢯⣜⣣⢏⠶⣱⢤⡙⢲⡍⣞⢣⠞⡴⣣⠝⣭⢳⠲⡔⢦⠥⡤⣌⢤⣉⣠⣈⣂⣃⣈⣈⣑⣈⣈⠁⠈⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠉⢚⠃⠾⠴⢫⣝⡚⡦⢏⡳⡼⣡⢏⡞⡵⢣⣛⢦⣋⠷⣙⠮⣝⠲⣭⢲⡱⢆⡳⣜⣲⡱⠏⠖⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠂⠠⠀⠉⠘⠒⠦⢤⡍⣍⣉⢓⡑⠋⠮⠝⡼⢣⡝⣦⣹⢚⣭⣓⢮⣛⡴⢣⠯⠝⠣⠙⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⡁⠄⠂⠐⢀⠠⠀⠀⠀⠁⠉⠊⠙⠋⠷⢺⡴⣓⡖⢦⣒⢦⡲⣔⠦⣖⠲⠒⠊⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠄⢀⠂⠁⠠⠀⠄⠁⠂⠐⡀⠄⠂⢀⠀⠀⠀⠀⠀⠁⠉⠀⠁⠀⠀⠀⢀⠀⠄⠐⠀⡁⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠠⠈⢀⠠⠈⢀⠐⠀⠌⠀⡁⠀⠄⠂⠠⠈⢀⠡⠐⠈⠀⠄⠂⠠⠁⢈⠠⠀⠂⠠⠈⠀⠄⠐⡀⠁⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+EOF
+  echo -e "\e[31m"
+  echo "Rebuild failed...NOT POGGERS!"
+  echo -e "\e[0m"
   cat "$LOG_FILE" | grep --color error && false
 fi
-
-
-
-
