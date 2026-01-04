@@ -1,0 +1,45 @@
+building the system configuration...
+error:
+       … while calling the 'head' builtin
+         at /nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/lib/attrsets.nix:1696:13:
+         1695|           if length values == 1 || pred here (elemAt values 1) (head values) then
+         1696|             head values
+             |             ^
+         1697|           else
+
+       … while evaluating the attribute 'value'
+         at /nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/lib/modules.nix:1118:7:
+         1117|     // {
+         1118|       value = addErrorContext "while evaluating the option `${showOption loc}':" value;
+             |       ^
+         1119|       inherit (res.defsFinal') highestPrio;
+
+       … while evaluating the option `system.build.toplevel':
+
+       … while evaluating definitions from `/nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/nixos/modules/system/activation/top-level.nix':
+
+       … while evaluating the option `system.systemBuilderArgs':
+
+       … while evaluating definitions from `/nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/nixos/modules/system/activation/activatable-system.nix':
+
+       … while evaluating the option `system.activationScripts.etc.text':
+
+       … while evaluating definitions from `/nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/nixos/modules/system/etc/etc-activation.nix':
+
+       … while evaluating definitions from `/nix/store/8xhlbjxxdysqrnv2yyj64b22p3m79015-nixos-25.11.2793.89dbf01df72e/nixos/nixos/modules/system/etc/etc.nix':
+
+       … while evaluating the option `environment.etc.dbus-1.source':
+
+       … while evaluating the option `environment.systemPackages':
+
+       … while evaluating definitions from `/etc/nixos/configuration.nix':
+
+       (stack trace truncated; use '--show-trace' to show the full, detailed trace)
+
+       error: undefined variable 'iiiii'
+       at /etc/nixos/configuration.nix:124:5:
+          123|     bind
+          124|     iiiii
+             |     ^
+          125|     mpv
+Command 'nix-build '<nixpkgs/nixos>' --attr config.system.build.toplevel --no-out-link' returned non-zero exit status 1.
