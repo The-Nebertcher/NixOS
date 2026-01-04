@@ -117,6 +117,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     (import ./vim.nix)
+    (import ./rebuild.nix)
     wget
     git
     curl
