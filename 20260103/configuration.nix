@@ -100,6 +100,16 @@
   #NOPASSWD
   security.sudo.wheelNeedsPassword = false;
 
+  #SSH Setup ----------------------------------------------------------------------------------------------
+  services.openssh = {
+    enable = true;
+    # require public key authentication for better security
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+};
+
+  programs.ssh.startAgent = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
