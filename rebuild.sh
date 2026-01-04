@@ -7,11 +7,11 @@ LOG_FILE="nixos-switch.log"
 if sudo nixos-rebuild switch &>"$LOG_FILE" || (cat "$LOG_FILE" | grep --color error && false); then
     echo "Rebuild successful. Cloning to local repo and pushing to Git..."
     # Put commands to run on success here
-    mkdir -p /mnt/backup/git_repos/nixos/	$(date +%Y%m%d%H%M%S)
-    cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/	$(date +%Y%m%d%H%M%S)/
-    cd /mnt/backup/git_repos/nixos/	$(date +%Y%m%d%H%M%S)/
+    mkdir -p /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S)
+    cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S)/
+    cd /mnt/backup/git_repos/nixos/$(date +%y%m%d_%H%M%S)/
     git add *
-    git commit -m "New Rebuild pushed on 	$(date +%Y%m%d%H%M%S)"
+    git commit -m "New Rebuild pushed on $(date +%y%m%d_%H%M%S)"
     git push origin main
 
     rm -f $LOG_FILE
