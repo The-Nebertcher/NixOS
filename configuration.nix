@@ -100,7 +100,7 @@
   #NOPASSWD
   security.sudo.wheelNeedsPassword = false;
 
-  #SSH Setup ----------------------------------------------------------------------------------------------
+  #SSH Setup ------------------------------------------------------------------------------------------------------
   services.openssh = {
     enable = true;
     # require public key authentication for better security
@@ -150,7 +150,7 @@
     vivaldi
     neofetch
     discord
-		mangohud
+    mangohud
     protonup-ng
     lutris
 #    teamspeak3
@@ -191,7 +191,7 @@
 		});
 	};
 
-  #Nvidia Setup ------------------------------------------------------------------------------------------------
+  #Nvidia Setup ---------------------------------------------------------------------------------------------------
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
