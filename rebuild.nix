@@ -1,10 +1,8 @@
 with import <nixpkgs> {};
 
 writeShellScriptBin "rebuild" ''
+with import <nixpkgs> {};
 LOG_FILE="/tmp/nixos-switch.log"
-
-#Pre-Warm 
-rm -f /tmp/nixos-switch.log
 
 # Function to display a loading bar
 show_progress() {
@@ -14,7 +12,7 @@ show_progress() {
     local empty=$(( width - filled ))
     printf "\r[" >/dev/tty
     printf "%''${filled}s" "" | tr ' ' '#' >/dev/tty
-    printf "%''${empty}s" "" | tr ' ' '-' >/dev/tty 
+    printf "%''${empty}s" "" | tr ' ' '-' >/dev/tty
     printf "] %d%%" "$progress" >/dev/tty
 }
 
@@ -25,13 +23,13 @@ if [ $? -eq 0 ]; then
   rm -f $LOG_FILE
   echo "Rebuild successful. Starting backup and git push..."
   show_progress 0
-  mkdir -p /mnt/backup/git_repos/nixos/$(date +%Y%m%d) &>/dev/null
+  mkdir -p /mnt/backup/git_repos/nixos/ &>/dev/null
   show_progress 20
 
-  cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/$(date +%Y%m%d)/ &>/dev/null
+  cp -aRfv /etc/nixos/* /mnt/backup/git_repos/nixos/ &>/dev/null
   show_progress 40
 
-  cd /mnt/backup/git_repos/nixos/$(date +%Y%m%d)/ &>/dev/null
+  cd /mnt/backup/git_repos/nixos/ &>/dev/null
   show_progress 60
 
   git add * &>/dev/null
