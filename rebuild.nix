@@ -1,7 +1,5 @@
 with import <nixpkgs> {};
-
 writeShellScriptBin "rebuild" ''
-with import <nixpkgs> {};
 LOG_FILE="/tmp/nixos-switch.log"
 
 # Function to display a loading bar
