@@ -126,6 +126,7 @@
     vlc
     htop
     plex-desktop
+    qalculate-qt
     python3
     irssi
     handbrake
