@@ -129,6 +129,7 @@
     qalculate-qt
     python3
     irssi
+    ffmpeg
     handbrake
     obs-studio
     deluge
