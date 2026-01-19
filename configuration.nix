@@ -130,6 +130,8 @@
     python3
     irssi
     ffmpeg
+    dysk
+    rsync
     handbrake
     obs-studio
     deluge
