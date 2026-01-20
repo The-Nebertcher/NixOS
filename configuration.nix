@@ -132,6 +132,7 @@
     ffmpeg
     dysk
     rsync
+    pkgs.home-manager
     handbrake
     obs-studio
     deluge
