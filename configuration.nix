@@ -126,6 +126,7 @@
     bind
     mpv
     vlc
+    audacity
     htop
     plex-desktop
     qalculate-qt
