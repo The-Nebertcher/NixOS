@@ -125,6 +125,10 @@
     curl
     bind
     mpv
+    btop
+    htop
+    iotop
+    perf
     vlc
     audacity
     htop
