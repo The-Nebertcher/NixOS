@@ -166,7 +166,8 @@
     mangohud
     protonup-ng
     lutris
-#    teamspeak3
+    wine
+    vkd3d
   ];
 
   programs = {
