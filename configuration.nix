@@ -162,6 +162,7 @@
     vivaldi
     neofetch
     discord
+    teamspeak6-client
     mangohud
     protonup-ng
     lutris
