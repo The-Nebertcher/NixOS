@@ -168,6 +168,7 @@
     lutris
     wine
     vkd3d
+    protonplus
   ];
 
   programs = {
