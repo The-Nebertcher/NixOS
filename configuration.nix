@@ -139,6 +139,7 @@
     ffmpeg
     dysk
     rsync
+    texliveFull
     pkgs.home-manager
     handbrake
     obs-studio
