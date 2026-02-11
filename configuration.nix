@@ -162,6 +162,7 @@
     pkgs.ghostty
     vivaldi
     neofetch
+    bottles
     discord
     teamspeak6-client
     mangohud
