@@ -149,6 +149,7 @@
     yt-dlp
     plex-mpv-shim
     winetricks
+    wine-staging
     vulkan-tools
     killall
     xfce.thunar
