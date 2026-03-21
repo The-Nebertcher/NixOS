@@ -57,14 +57,28 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  #SDDM Setup ------------------------------------------------------------------------------------------------------
-  services.displayManager.sddm = {
-    enable = true;
-    enableHidpi = true;
-    wayland.enable = true; # Enable Wayland for the SDDM greeter itself
-    theme = "where-is-my-sddm-theme";
+#  #SDDM Setup ------------------------------------------------------------------------------------------------------
+#  services.displayManager.sddm = {
+#    enable = true;
+#    enableHidpi = true;
+#    wayland.enable = true; # Enable Wayland for the SDDM greeter itself
+#    compositor = "kwin";
+#    theme = "where-is-my-sddm-theme";
+#  };
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      enableHidpi = true;
+      wayland.enable = true; # Enable Wayland for the SDDM greeter itself
+      theme = "where-is-my-sddm-theme";
+    };
+    autoLogin = {
+      enable = true;    
+      user = "gabe"; # Replace with the desired user
+    };
   };
-  
+
+
   #KDE Plasma Setup ------------------------------------------------------------------------------------------------
   services.desktopManager.plasma6.enable = true;
 
@@ -199,7 +213,7 @@
         enable = true;
         theme = "duellj";
         plugins = [
-	  "git"
+      	  "git"
         ];
       };
     };
