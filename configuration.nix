@@ -15,7 +15,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   networking.hostName = "SHODAN"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -49,10 +49,16 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  #SDDM Setup ------------------------------------------------------------------------------------------------------
+    services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true; # Enable Wayland for the SDDM greeter itself
+    theme = "sugar-candy";
+  };
+  
+  #KDE Plasma Setup ------------------------------------------------------------------------------------------------------
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -83,7 +89,8 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+
+  #User(s) Setup ------------------------------------------------------------------------------------------------------
   users.users.gabe = {
     isNormalUser = true;
     createHome = true;
@@ -108,7 +115,7 @@
     # require public key authentication for better security
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
-};
+  };
 
   programs.ssh.startAgent = true;
 
@@ -158,6 +165,7 @@
     screen
     veracrypt
     python3
+    libsForQt5.qt5.qtgraphicaleffects
     jetbrains.pycharm
     terminator
     pkgs.ghostty
