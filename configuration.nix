@@ -58,13 +58,14 @@
   services.xserver.enable = true;
 
   #SDDM Setup ------------------------------------------------------------------------------------------------------
-    services.displayManager.sddm = {
+  services.displayManager.sddm = {
     enable = true;
+    enableHidpi = true;
     wayland.enable = true; # Enable Wayland for the SDDM greeter itself
-    theme = "sugar-candy";
+    theme = "where-is-my-sddm-theme";
   };
   
-  #KDE Plasma Setup ------------------------------------------------------------------------------------------------------
+  #KDE Plasma Setup ------------------------------------------------------------------------------------------------
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
@@ -74,7 +75,7 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -171,6 +172,7 @@
     screen
     veracrypt
     python3
+    pkgs.where-is-my-sddm-theme
     libsForQt5.qt5.qtgraphicaleffects
     jetbrains.pycharm
     terminator
