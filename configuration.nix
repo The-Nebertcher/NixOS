@@ -14,6 +14,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Rotation: 1=90°, 2=180°, 3=270°
+  boot.kernelParams = [
+  "video=DP-4:3840x2160@120.00"
+  "video=DP-3:2560x1440@143.97,rotate=180"
+  ];
+  
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
@@ -49,7 +55,7 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  # services.xserver.enable = true;
+  services.xserver.enable = true;
 
   #SDDM Setup ------------------------------------------------------------------------------------------------------
     services.displayManager.sddm = {
