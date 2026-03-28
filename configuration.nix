@@ -123,6 +123,10 @@
     
   };
 
+	services.locate = {
+		enable = true;
+	};
+
   #NOPASSWD
   security.sudo.wheelNeedsPassword = false;
 
