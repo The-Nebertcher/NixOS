@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
@@ -23,15 +23,24 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
+	#Wifi setup -----------------------------------------------------------------------------------------------------
+	networking.wireless = {
+  enable = true;
+  networks = {
+    "Casa" = {
+      psk = "SaltySpitoon6969";
+    };
+  };
+};
   networking.hostName = "SHODAN"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+	#networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
+  # Enable NetworkManager for a wired connection
+	#networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Denver";
@@ -148,7 +157,11 @@
   environment.systemPackages = with pkgs; [
     (import ./vim.nix)
     (import ./rebuild.nix)
-    wget
+    (vivaldi.override {
+      proprietaryCodecs = true;
+      enableWidevine = true;
+    })
+		wget
     git
     curl
     bind
@@ -202,7 +215,7 @@
     wine
     vkd3d
     protonplus
-  ];
+	];
 
   programs = {
     zsh = {
@@ -218,6 +231,7 @@
       };
     };
   };
+
 
   #Mullvad VPN setup ----------------------------------------------------------------------------------------------
   services.mullvad-vpn.enable = true;
