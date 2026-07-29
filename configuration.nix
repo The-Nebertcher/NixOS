@@ -24,14 +24,14 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
 	#Wifi setup -----------------------------------------------------------------------------------------------------
-#	networking.wireless = {
-#  enable = true;
-#  networks = {
-#    "Casa" = {
-#      psk = "SaltySpitoon6969";
-#    };
-#  };
-#};
+	networking.wireless = {
+  enable = true;
+  networks = {
+    "Casa" = {
+      psk = "SaltySpitoon6969";
+    };
+  };
+};
   networking.hostName = "SHODAN"; # Define your hostname.
 	#networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -40,7 +40,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable NetworkManager for a wired connection
-	networking.networkmanager.enable = true;
+	#networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Denver";
