@@ -77,7 +77,7 @@ networking.networkmanager.enable = true;
       theme = "where-is-my-sddm-theme";
     };
     autoLogin = {
-      enable = true;    
+      enable = false;    
       user = "gabe"; # Replace with the desired user
     };
   };
